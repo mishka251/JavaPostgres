@@ -4,7 +4,7 @@
 ####Установка
 Для работы нужна доп. библиотека postgresql скачать можно здесь https://jdbc.postgresql.org/download.html
 и добавить в проект, например для Itellij IDEA
-File->Project Structure -> Librarises -> '+'
+File->Project Structure -> Libraries -> '+'
 и выбрать файл. 
 
 ####Текущее состояние

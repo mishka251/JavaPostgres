@@ -151,23 +151,23 @@ public class PosgtresDB {
         return results;
     }
 
-    public Map<String, ArrayList<Object>> select(String table, String soqrtColumn, String sortType) throws SQLException {
+    public Map<String, ArrayList<Object>> select(String table, String sortColumn, String sortType) throws SQLException {
         String sql = "SELECT * FROM " +
                 table +
                 " ORDERED BY " +
-                soqrtColumn +
+                sortColumn +
                 " " +
                 sortType;
         PreparedStatement statement = connection.prepareStatement(sql);
 
         ResultSet resultSet = statement.executeQuery();
         Map<String, ArrayList<Object>> results = new HashMap<>();
-        ResultSetMetaData rsmd = resultSet.getMetaData();
-        int columnCount = rsmd.getColumnCount();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
 
 // The column count starts from 1
         for (int i = 1; i <= columnCount; i++) {
-            String name = rsmd.getColumnName(i);
+            String name = metaData.getColumnName(i);
             results.put(name, new ArrayList<>());
         }
 

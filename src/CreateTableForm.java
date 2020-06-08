@@ -94,7 +94,7 @@ public class CreateTableForm extends JFrame {
             isValid = false;
         }
         if (!isValid) {
-            JOptionPane.showMessageDialog(this, "Не все поля заполнены", "Ërror", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Не все поля заполнены", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
