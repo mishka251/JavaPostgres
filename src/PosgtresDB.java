@@ -98,13 +98,12 @@ public class PosgtresDB {
     }
 
     void delete(String tableName, String columnName, Object value) throws SQLException {
-        StringBuilder sql = new StringBuilder();
-        sql.append("DELETE FROM ");
-        sql.append(tableName);
-        sql.append(" WHERE ");
-        sql.append(columnName);
-        sql.append("=?");
-        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        String sql = "DELETE FROM " +
+                tableName +
+                " WHERE " +
+                columnName +
+                "=?";
+        PreparedStatement statement = connection.prepareStatement(sql);
 
         if (value instanceof java.util.Date) {
             statement.setObject(1, value, Types.DATE);
@@ -116,21 +115,19 @@ public class PosgtresDB {
     }
 
     public void dropTable(String table) throws SQLException {
-        StringBuilder sql = new StringBuilder();
-        sql.append("DROP TABLE ");
-        sql.append(table);
 
-        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        String sql = "DROP TABLE " +
+                table;
+        PreparedStatement statement = connection.prepareStatement(sql);
 
         statement.execute();
         statement.close();
     }
 
     public Map<String, ArrayList<Object>> select(String table) throws SQLException {
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT * FROM ");
-        sql.append(table);
-        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        String sql = "SELECT * FROM " +
+                table;
+        PreparedStatement statement = connection.prepareStatement(sql);
 
         ResultSet resultSet = statement.executeQuery();
         Map<String, ArrayList<Object>> results = new HashMap<>();
@@ -143,15 +140,106 @@ public class PosgtresDB {
             results.put(name, new ArrayList<>());
         }
 
-        while(resultSet.next()){
-            for(String columnName: results.keySet()){
+        while (resultSet.next()) {
+            for (String columnName : results.keySet()) {
                 Object value = resultSet.getObject(columnName);
                 results.get(columnName).add(value);
             }
         }
 
-        // for(Strint column: results.)
         statement.close();
         return results;
+    }
+
+    public Map<String, ArrayList<Object>> select(String table, String soqrtColumn, String sortType) throws SQLException {
+        String sql = "SELECT * FROM " +
+                table +
+                " ORDERED BY " +
+                soqrtColumn +
+                " " +
+                sortType;
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet resultSet = statement.executeQuery();
+        Map<String, ArrayList<Object>> results = new HashMap<>();
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int columnCount = rsmd.getColumnCount();
+
+// The column count starts from 1
+        for (int i = 1; i <= columnCount; i++) {
+            String name = rsmd.getColumnName(i);
+            results.put(name, new ArrayList<>());
+        }
+
+        while (resultSet.next()) {
+            for (String columnName : results.keySet()) {
+                Object value = resultSet.getObject(columnName);
+                results.get(columnName).add(value);
+            }
+        }
+
+        statement.close();
+        return results;
+    }
+
+    public void update(String tableName, String condition, String[] updatedColumns, Object[] newValues)throws SQLException {
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE ");
+        sql.append(tableName);
+        sql.append(" SET ");
+        for (int i = 0; i < updatedColumns.length; i++) {
+            sql.append(updatedColumns[i]);
+            sql.append("=?");
+            if (i != updatedColumns.length - 1) {
+                sql.append(",");
+            }
+        }
+        sql.append("WHERE ");
+        sql.append(condition);
+
+        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        for (Object value : newValues) {
+            if (value instanceof java.util.Date) {
+                statement.setObject(1, value, Types.DATE);
+            } else {
+                statement.setObject(1, value);
+            }
+        }
+
+        statement.execute();
+    }
+
+    ArrayList<String> getTableNames() throws SQLException {
+        if (this.connection == null) {
+            throw new SQLException("Нет подключения к БД");
+        }
+
+        PreparedStatement statement =
+                connection.prepareStatement("select table_name from information_schema.tables where table_schema = ?");
+        statement.setString(1, "public");
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<String> tables = new ArrayList<>();
+        while (resultSet.next()) {
+            tables.add(resultSet.getString("table_name"));
+        }
+        return tables;
+    }
+
+    ArrayList<TableColumn> getTableColumnNames(String tableName) throws SQLException {
+        if (this.connection == null) {
+            throw new SQLException("Нет подключения к БД");
+        }
+
+        PreparedStatement statement =
+                connection.prepareStatement("SELECT column_name, udt_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = ?");
+        statement.setString(1, tableName);
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<TableColumn> tables = new ArrayList<>();
+        while (resultSet.next()) {
+            String name = resultSet.getString("column_name");
+            String type = resultSet.getString("udt_name");
+            tables.add(new TableColumn(name, type));
+        }
+        return tables;
     }
 }
