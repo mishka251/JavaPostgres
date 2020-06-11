@@ -1,3 +1,5 @@
+package database_instruments;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

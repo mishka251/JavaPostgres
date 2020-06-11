@@ -1,3 +1,5 @@
+package database_instruments;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,6 +153,34 @@ public class PosgtresDB {
         return results;
     }
 
+    public Map<String, ArrayList<Object>> selectWhere(String table, String condition) throws SQLException {
+        String sql = "SELECT * FROM " +
+                table + " WHERE " + condition;
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet resultSet = statement.executeQuery();
+        Map<String, ArrayList<Object>> results = new HashMap<>();
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int columnCount = rsmd.getColumnCount();
+
+// The column count starts from 1
+        for (int i = 1; i <= columnCount; i++) {
+            String name = rsmd.getColumnName(i);
+            results.put(name, new ArrayList<>());
+        }
+
+        while (resultSet.next()) {
+            for (String columnName : results.keySet()) {
+                Object value = resultSet.getObject(columnName);
+                results.get(columnName).add(value);
+            }
+        }
+
+        statement.close();
+        return results;
+    }
+
     public Map<String, ArrayList<Object>> select(String table, String sortColumn, String sortType) throws SQLException {
         String sql = "SELECT * FROM " +
                 table +
@@ -182,7 +212,38 @@ public class PosgtresDB {
         return results;
     }
 
-    public void update(String tableName, String condition, String[] updatedColumns, Object[] newValues)throws SQLException {
+    public Map<String, ArrayList<Object>> selectWhere(String table, String sortColumn, String sortType, String condition) throws SQLException {
+        String sql = "SELECT * FROM " +
+                table + " WHERE " + condition +
+                " ORDERED BY " +
+                sortColumn +
+                " " +
+                sortType;
+        PreparedStatement statement = connection.prepareStatement(sql);
+
+        ResultSet resultSet = statement.executeQuery();
+        Map<String, ArrayList<Object>> results = new HashMap<>();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+// The column count starts from 1
+        for (int i = 1; i <= columnCount; i++) {
+            String name = metaData.getColumnName(i);
+            results.put(name, new ArrayList<>());
+        }
+
+        while (resultSet.next()) {
+            for (String columnName : results.keySet()) {
+                Object value = resultSet.getObject(columnName);
+                results.get(columnName).add(value);
+            }
+        }
+
+        statement.close();
+        return results;
+    }
+
+    public void update(String tableName, String condition, String[] updatedColumns, Object[] newValues) throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("UPDATE ");
         sql.append(tableName);

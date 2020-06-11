@@ -1,3 +1,5 @@
+package database_instruments;
+
 public class TableColumn {
     public String name;
     public String type;
