@@ -19,7 +19,7 @@ public class LoginForm extends JFrame {
         this.db = db;
         setLayout(null);
 
-        setSize(120, 160);
+        setSize(120, 210);
 
         JLabel lblLogin = new JLabel("Login");
         lblLogin.setBounds(10, 10, 100, 20);
@@ -41,26 +41,32 @@ public class LoginForm extends JFrame {
         btnLogin.setBounds(20, 130, 80, 20);
         add(btnLogin);
 
-
+        btnLogin.addActionListener(this::login);
         setVisible(true);
     }
 
     void login(ActionEvent event) {
         try {
-            Map<String, ArrayList<Object>> result = db.selectWhere("USERS", "login=" + loginField.getText());
+            Map<String, ArrayList<Object>> result = db.selectWhere("USER", "login=\'" + loginField.getText()+"\'");
             ArrayList<Object> password = result.get("password");
             if (password.size() == 0) {
                 JOptionPane.showMessageDialog(this, "No user with this login");
                 return;
             }
-            
+
             if (!passwordField.getText().equals(password.get(0))) {
                 JOptionPane.showMessageDialog(this, "Wrong password");
                 return;
             }
 
             JOptionPane.showMessageDialog(this, "Ok");
-            //TODO open form for user type
+            if ("teacher".equals(result.get("position").get(0))) {
+                new TeacherForm();
+            } else if ("decanat".equals(result.get("position").get(0))) {
+                new DecanatForm();
+            } else {
+                JOptionPane.showMessageDialog(this, "Неопределенный тип сотрудика");
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
