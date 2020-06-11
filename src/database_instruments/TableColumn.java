@@ -8,4 +8,12 @@ public class TableColumn {
         this.name=name;
         this.type=type;
     }
+
+    @Override
+    public String toString() {
+        return "TableColumn{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

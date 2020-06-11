@@ -13,18 +13,18 @@ public class PosgtresDB {
 
     public void connect() {
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            System.out.println("PostgreSQL JDBC Driver is not found. Include it in your library path ");
+            System.out.println("SQlite JDBC Driver is not found. Include it in your library path ");
             e.printStackTrace();
             return;
         }
-        System.out.println("PostgreSQL JDBC Driver successfully connected");
+        System.out.println("SQLite JDBC Driver successfully connected");
         connection = null;
 
         try {
-            connection = DriverManager
-                    .getConnection(dbUrl, login, password);
+            connection = DriverManager.getConnection("jdbc:sqlite:test_sqlite.db");
+                   // .getConnection(dbUrl, login, password);
 
         } catch (SQLException e) {
             System.out.println("Connection Failed");
@@ -276,12 +276,17 @@ public class PosgtresDB {
         }
 
         PreparedStatement statement =
-                connection.prepareStatement("select table_name from information_schema.tables where table_schema = ?");
-        statement.setString(1, "public");
+                connection.prepareStatement("SELECT \n" +
+                        "    name\n" +
+                        "FROM \n" +
+                        "    sqlite_master \n" +
+                        "WHERE \n" +
+                        "    type ='table' AND \n" +
+                        "    name NOT LIKE 'sqlite_%';");
         ResultSet resultSet = statement.executeQuery();
         ArrayList<String> tables = new ArrayList<>();
         while (resultSet.next()) {
-            tables.add(resultSet.getString("table_name"));
+            tables.add(resultSet.getString("name"));
         }
         return tables;
     }
@@ -292,13 +297,13 @@ public class PosgtresDB {
         }
 
         PreparedStatement statement =
-                connection.prepareStatement("SELECT column_name, udt_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = ?");
+                connection.prepareStatement("SELECT name, type FROM PRAGMA_TABLE_INFO(?)");
         statement.setString(1, tableName);
         ResultSet resultSet = statement.executeQuery();
         ArrayList<TableColumn> tables = new ArrayList<>();
         while (resultSet.next()) {
-            String name = resultSet.getString("column_name");
-            String type = resultSet.getString("udt_name");
+            String name = resultSet.getString("name");
+            String type = resultSet.getString("type");
             tables.add(new TableColumn(name, type));
         }
         return tables;
