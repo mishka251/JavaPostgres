@@ -47,7 +47,7 @@ public class LoginForm extends JFrame {
 
     void login(ActionEvent event) {
         try {
-            Map<String, ArrayList<Object>> result = db.selectWhere("USER", "login=\'" + loginField.getText()+"\'");
+            Map<String, ArrayList<Object>> result = db.selectWhere("USER", "login=\'" + loginField.getText() + "\'");
             ArrayList<Object> password = result.get("password");
             if (password.size() == 0) {
                 JOptionPane.showMessageDialog(this, "No user with this login");
@@ -58,10 +58,10 @@ public class LoginForm extends JFrame {
                 JOptionPane.showMessageDialog(this, "Wrong password");
                 return;
             }
-
+            int id = (int) result.get("id").get(0);
             JOptionPane.showMessageDialog(this, "Ok");
             if ("teacher".equals(result.get("position").get(0))) {
-                new TeacherForm();
+                new TeacherForm(db, id);
             } else if ("decanat".equals(result.get("position").get(0))) {
                 new DecanatForm();
             } else {

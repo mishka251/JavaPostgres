@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PosgtresDB {
-    String dbUrl = "jdbc:postgresql://localhost/laba9Db";
-    String login = "Laba9Role";
-    String password = "laba9_password";
+//    String dbUrl = "jdbc:postgresql://localhost/laba9Db";
+//    String login = "Laba9Role";
+//    String password = "laba9_password";
     Connection connection;
 
     public void connect() {
@@ -23,8 +23,8 @@ public class PosgtresDB {
         connection = null;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:test_sqlite.db");
-                   // .getConnection(dbUrl, login, password);
+            connection = DriverManager.getConnection("jdbc:sqlite:F:/repos/JavaPostgres/test_sqlite.db");
+            // .getConnection(dbUrl, login, password);
 
         } catch (SQLException e) {
             System.out.println("Connection Failed");
@@ -60,10 +60,10 @@ public class PosgtresDB {
         Statement statement = connection.createStatement();
 
         statement.execute(sql.toString());
-        statement.close();
+       // statement.close();
     }
 
-    public void insert(String tableName, String[] columnNames, Object[] values) throws SQLException {
+    public long insert(String tableName, String[] columnNames, Object[] values) throws SQLException {
         StringBuilder sql = new StringBuilder();
         sql.append("INSERT INTO ");
         sql.append(tableName);
@@ -87,7 +87,7 @@ public class PosgtresDB {
         }
 
         sql.append(")");
-        PreparedStatement statement = connection.prepareStatement(sql.toString());
+        PreparedStatement statement = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
         for (int i = 0; i < columnNames.length; i++) {
             if (values[i] instanceof java.util.Date) {
                 statement.setObject(i + 1, values[i], Types.DATE);
@@ -95,8 +95,23 @@ public class PosgtresDB {
                 statement.setObject(i + 1, values[i]);
             }
         }
-        statement.execute();
-        statement.close();
+        int affectedRows = statement.executeUpdate();
+
+        if (affectedRows == 0) {
+          //  statement.close();
+            throw new SQLException("Creating user failed, no rows affected.");
+        }
+
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                //statement.close();
+                return generatedKeys.getLong(1);
+            } else {
+              //  statement.close();
+                throw new SQLException("Creating user failed, no ID obtained.");
+            }
+        }
+
     }
 
     void delete(String tableName, String columnName, Object value) throws SQLException {
@@ -113,7 +128,7 @@ public class PosgtresDB {
             statement.setObject(1, value);
         }
         statement.execute();
-        statement.close();
+      //  statement.close();
     }
 
     public void dropTable(String table) throws SQLException {
@@ -123,14 +138,13 @@ public class PosgtresDB {
         PreparedStatement statement = connection.prepareStatement(sql);
 
         statement.execute();
-        statement.close();
+       // statement.close();
     }
 
     public Map<String, ArrayList<Object>> select(String table) throws SQLException {
-        String sql = "SELECT * FROM " +
-                table;
+        String sql = "SELECT * FROM '"+table+"'";
         PreparedStatement statement = connection.prepareStatement(sql);
-
+//statement.setString(1, table);
         ResultSet resultSet = statement.executeQuery();
         Map<String, ArrayList<Object>> results = new HashMap<>();
         ResultSetMetaData rsmd = resultSet.getMetaData();
@@ -149,7 +163,7 @@ public class PosgtresDB {
             }
         }
 
-        statement.close();
+        //statement.close();
         return results;
     }
 
@@ -177,7 +191,7 @@ public class PosgtresDB {
             }
         }
 
-        statement.close();
+       // statement.close();
         return results;
     }
 
@@ -208,7 +222,7 @@ public class PosgtresDB {
             }
         }
 
-        statement.close();
+       // statement.close();
         return results;
     }
 
@@ -239,7 +253,7 @@ public class PosgtresDB {
             }
         }
 
-        statement.close();
+       // statement.close();
         return results;
     }
 

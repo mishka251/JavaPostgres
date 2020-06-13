@@ -11,21 +11,21 @@ public class Main {
     public static void main(String[] args) {
         PosgtresDB db = new PosgtresDB();
         db.connect();
-        try {
-            ArrayList<String> tables = db.getTableNames();
-            System.out.println(tables);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
-
-        try {
-            ArrayList<TableColumn> tables = db.getTableColumnNames("student");
-            System.out.println(tables);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+//        try {
+//            ArrayList<String> tables = db.getTableNames();
+//            System.out.println(tables);
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//            ex.printStackTrace();
+//        }
+//
+//        try {
+//            ArrayList<TableColumn> tables = db.getTableColumnNames("student");
+//            System.out.println(tables);
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//            ex.printStackTrace();
+//        }
 
         new LoginForm(db);
 
