@@ -4,6 +4,7 @@ import database_instruments.PosgtresDB;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class Register {
     String groupSpeciality;
     String subjectName;
 
-    int[] studentMarks;
+    Integer[] studentMarks;
     Integer[] studentIds;
     String[] studentNames;
 
@@ -37,19 +38,19 @@ public class Register {
 
     public void loadFromDb() throws SQLException {
         Map<String, ArrayList<Object>> studentsTable = db.selectWhere("student", "surname", "ASC", "group_id=" + groupId);
-        studentNames = (String[]) studentsTable.get("name").toArray();
-        studentIds = (Integer[]) studentsTable.get("id").toArray();
+        studentNames = Arrays.copyOf( studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
+        studentIds = Arrays.copyOf( studentsTable.get("id").toArray(), studentsTable.get("id").size(), Integer[].class);
 
         Map<String, ArrayList<Object>> groupTable = db.selectWhere("group", "id=" + groupId);
         groupNumber = (String) groupTable.get("number").get(0);
         groupSpeciality = (String) groupTable.get("speciality").get(0);
 
-        Map<String, ArrayList<Object>> teacherTable = db.selectWhere("teacher", "id=" + teacherId);
+        Map<String, ArrayList<Object>> teacherTable = db.selectWhere("user", "id=" + teacherId);
         teacherFio = (String) teacherTable.get("surname").get(0) +
                 (String) teacherTable.get("name").get(0) +
                 (String) teacherTable.get("patronymic").get(0);
 
-        Map<String, ArrayList<Object>> subjectTable = db.selectWhere("subject", "id=" + teacherId);
+        Map<String, ArrayList<Object>> subjectTable = db.selectWhere("subjects", "id=" + teacherId);
         subjectName = (String) subjectTable.get("name").get(0);
 
     }

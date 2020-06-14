@@ -168,8 +168,8 @@ public class PosgtresDB {
     }
 
     public Map<String, ArrayList<Object>> selectWhere(String table, String condition) throws SQLException {
-        String sql = "SELECT * FROM " +
-                table + " WHERE " + condition;
+        String sql = "SELECT * FROM '" +
+                table + "' WHERE " + condition;
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -196,9 +196,9 @@ public class PosgtresDB {
     }
 
     public Map<String, ArrayList<Object>> select(String table, String sortColumn, String sortType) throws SQLException {
-        String sql = "SELECT * FROM " +
+        String sql = "SELECT * FROM '" +
                 table +
-                " ORDERED BY " +
+                "' ORDER BY " +
                 sortColumn +
                 " " +
                 sortType;
@@ -227,9 +227,9 @@ public class PosgtresDB {
     }
 
     public Map<String, ArrayList<Object>> selectWhere(String table, String sortColumn, String sortType, String condition) throws SQLException {
-        String sql = "SELECT * FROM " +
-                table + " WHERE " + condition +
-                " ORDERED BY " +
+        String sql = "SELECT * FROM '" +
+                table + "' WHERE " + condition +
+                " ORDER BY " +
                 sortColumn +
                 " " +
                 sortType;
