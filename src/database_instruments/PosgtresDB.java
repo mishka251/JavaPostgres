@@ -23,7 +23,7 @@ public class PosgtresDB {
         connection = null;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:F:/repos/JavaPostgres/test_sqlite.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:test_sqlite.db");
             // .getConnection(dbUrl, login, password);
 
         } catch (SQLException e) {
