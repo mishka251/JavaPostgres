@@ -63,7 +63,7 @@ public class LoginForm extends JFrame {
             if ("teacher".equals(result.get("position").get(0))) {
                 new TeacherForm(db, id);
             } else if ("decanat".equals(result.get("position").get(0))) {
-                new DecanatForm();
+                new DecanatForm(db, id);
             } else {
                 JOptionPane.showMessageDialog(this, "Неопределенный тип сотрудика");
             }

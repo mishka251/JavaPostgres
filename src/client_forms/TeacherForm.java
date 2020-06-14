@@ -25,6 +25,7 @@ public class TeacherForm extends JFrame {
         setLayout(null);
         this.teacher_id = teacher_id;
         this.db = db;
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel lblGroups = new JLabel("Группа");
         lblGroups.setBounds(10, 10, 100, 40);
