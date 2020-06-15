@@ -5,6 +5,7 @@ import database_instruments.PosgtresDB;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 public class Report {
@@ -23,8 +24,11 @@ public class Report {
 
     String groupNumber;
     String groupSpeciality;
+    String subjectName;
 
     int registerId;
+    Date date;
+    String controlType;
 
 
     Report(PosgtresDB db, int registerId) throws SQLException {
@@ -35,6 +39,8 @@ public class Report {
 
         this.groupId = (Integer) registerTable.get("group_id").get(0);
         this.subjectId = (Integer) registerTable.get("subject_id").get(0);
+        controlType = (String) registerTable.get("control_type").get(0);
+        date = new Date((Long) registerTable.get("date").get(0));// (Date) registerTable.get("date").get(0);
 
         Map<String, ArrayList<Object>> studentsTable = db.selectWhere("student", "surname", "ASC", "group_id=" + groupId);
         studentNames = Arrays.copyOf(studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
@@ -43,6 +49,9 @@ public class Report {
         Map<String, ArrayList<Object>> groupTable = db.selectWhere("group", "id=" + groupId);
         groupNumber = (String) groupTable.get("number").get(0);
         groupSpeciality = (String) groupTable.get("speciality").get(0);
+
+        Map<String, ArrayList<Object>> subjectTable = db.selectWhere("subjects", "id=" + subjectId);
+        subjectName = (String) subjectTable.get("name").get(0);
     }
 
 
@@ -73,7 +82,8 @@ public class Report {
     }
 
     void saveToDb() throws SQLException {
-        db.insert("report", new String[]{
+        db.insert("report",
+                new String[]{
                         "subject_id",
                         "group_id",
                         "excellent_percent",

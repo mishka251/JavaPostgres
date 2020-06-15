@@ -72,7 +72,6 @@ public class Register {
                         controlType,
                         groupId,
                         teacherId,
-                        teacherId,
                         now,
                 });
 

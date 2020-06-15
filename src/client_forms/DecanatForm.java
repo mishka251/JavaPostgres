@@ -3,6 +3,8 @@ package client_forms;
 import database_instruments.PosgtresDB;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -11,20 +13,14 @@ public class DecanatForm extends JFrame {
     PosgtresDB db;
     int user_id;
 
-//    JComboBox<String> group;
-//    JComboBox<String> subject;
-
     JComboBox<Integer> register;
-
-//    Integer[] subject_ids;
-//    Integer[] group_ids;
 
     Report report;
 
-    JLabel lblExcellent;
-    JLabel lblStriker;
-    JLabel lblThreesome;
-    JLabel lblLooser;
+    JTextPane reportEditor;
+
+    JFileChooser fileChooser;
+
 
     DecanatForm(PosgtresDB db, int id) {
         setLayout(null);
@@ -32,7 +28,7 @@ public class DecanatForm extends JFrame {
         this.db = db;
         this.user_id = id;
 
-        JLabel lblGroups = new JLabel("Группа");
+        JLabel lblGroups = new JLabel("Ведомость №");
         lblGroups.setBounds(10, 10, 100, 40);
         add(lblGroups);
 
@@ -47,20 +43,10 @@ public class DecanatForm extends JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-        JLabel lblSubj = new JLabel("Предмет");
-        lblSubj.setBounds(250, 10, 100, 40);
-        add(lblSubj);
+//        JLabel lblSubj = new JLabel("Предмет");
+//        lblSubj.setBounds(250, 10, 100, 40);
+//        add(lblSubj);
 
-//        try {
-//            Map<String, ArrayList<Object>> subjects =
-//                    db.select("subjects");
-//            subject_ids = Arrays.copyOf(subjects.get("id").toArray(), subjects.get("id").size(), Integer[].class);
-//            subject = new JComboBox<>(Arrays.copyOf(subjects.get("name").toArray(), subjects.get("name").size(), String[].class));
-//            subject.setBounds(380, 10, 100, 30);
-//            add(subject);
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(this, ex.getMessage());
-//        }
 
         JButton btnLoad = new JButton("Load");
         btnLoad.setBounds(390, 40, 100, 30);
@@ -73,28 +59,11 @@ public class DecanatForm extends JFrame {
         btnSave.addActionListener(event -> this.saveReport());
 
 
-        lblExcellent = new JLabel();
-        lblExcellent.setBounds(10, 100, 100, 20);
-        lblExcellent.setVisible(false);
-        add(lblExcellent);
+        reportEditor = new JTextPane();
+        reportEditor.setBounds(10, 100, 400, 300);
+        add(reportEditor);
 
-        lblStriker = new JLabel();
-        lblStriker.setBounds(10, 130, 100, 20);
-        lblStriker.setVisible(false);
-        add(lblStriker);
-
-
-        lblThreesome = new JLabel();
-        lblThreesome.setBounds(10, 160, 100, 20);
-        lblThreesome.setVisible(false);
-        add(lblThreesome);
-
-
-        lblLooser = new JLabel();
-        lblLooser.setBounds(10, 190, 100, 20);
-        lblLooser.setVisible(false);
-        add(lblLooser);
-
+        fileChooser = new JFileChooser();
 
         setSize(500, 400);
         setVisible(true);
@@ -106,16 +75,8 @@ public class DecanatForm extends JFrame {
         try {
             this.report = new Report(db, registerId);
             this.report.calculateStatistic();
-
-            lblExcellent.setText("5 - " + (report.excellentPercent * 100) + "%");
-            lblStriker.setText("4 - " + (report.strikerPercent * 100) + "%");
-            lblThreesome.setText("3 - " + (report.threesomePercent * 100) + "%");
-            lblLooser.setText("2 - " + (report.looserPercent * 100) + "%");
-
-            lblExcellent.setVisible(true);
-            lblStriker.setVisible(true);
-            lblThreesome.setVisible(true);
-            lblLooser.setVisible(true);
+            ReportFormatter formatter = new ReportFormatter(report);
+            reportEditor.setText(formatter.format());
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -127,6 +88,18 @@ public class DecanatForm extends JFrame {
     void saveReport() {
         try {
             report.saveToDb();
+            int dialogResult = fileChooser.showSaveDialog(this);
+            if (dialogResult != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            File selected = fileChooser.getSelectedFile();
+            try {
+                FileWriter fw = new FileWriter(selected);
+                fw.write(reportEditor.getText());
+                fw.close();
+            } catch (java.io.IOException ex) {
+                //TODO
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
