@@ -100,29 +100,23 @@ public class TeacherForm extends JFrame {
             JOptionPane.showMessageDialog(this, "Не загружены студенты");
             return;
         }
-        this.register.studentMarks = new Integer[studentPanels.size()];
-        try {
-            for (int i = 0; i < studentPanels.size(); i++) {
-                this.register.studentMarks[i] = studentPanels.get(i).getMark();
-            }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Не все оценки заполнены или заполнены неверно");
-        } catch (Exception ex) {
 
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+        ErrorChecker checker = new ErrorChecker();
+        ArrayList<String> errors = checker.checkTeacherForm(this);
+        if (errors.size() > 0) {
+            JOptionPane.showMessageDialog(this, String.join(",\n", errors), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
-//        for (int i = 0; i < this.register.studentMarks.length; i++) {
-//            if (this.register.studentMarks[i] == null) {
-//                JOptionPane.showMessageDialog(this, "Не все оценки заполнены");
-//                return;
-//            }
-//        }
+        this.register.studentMarks = new Integer[studentPanels.size()];
+        for (int i = 0; i < studentPanels.size(); i++) {
+            this.register.studentMarks[i] = studentPanels.get(i).getMark();
+        }
+
 
         try {
             this.register.saveMarks();
         } catch (Exception ex) {
-
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 

@@ -43,10 +43,6 @@ public class DecanatForm extends JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-//        JLabel lblSubj = new JLabel("Предмет");
-//        lblSubj.setBounds(250, 10, 100, 40);
-//        add(lblSubj);
-
 
         JButton btnLoad = new JButton("Load");
         btnLoad.setBounds(390, 40, 100, 30);
@@ -86,6 +82,12 @@ public class DecanatForm extends JFrame {
     }
 
     void saveReport() {
+        ErrorChecker checker = new ErrorChecker();
+        ArrayList<String> errors = checker.checkDecanatForm(this);
+        if (errors.size() > 0) {
+            JOptionPane.showMessageDialog(this, String.join(",\n", errors), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         try {
             report.saveToDb();
             int dialogResult = fileChooser.showSaveDialog(this);
@@ -98,7 +100,7 @@ public class DecanatForm extends JFrame {
                 fw.write(reportEditor.getText());
                 fw.close();
             } catch (java.io.IOException ex) {
-                //TODO
+                JOptionPane.showMessageDialog(this, ex.getMessage());
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
