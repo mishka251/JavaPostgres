@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class LoginForm extends JFrame {
-    JTextField loginField;
-    JTextField passwordField;
+    final JTextField loginField;
+    final JTextField passwordField;
 
-    JButton btnLogin;
+    final JButton btnLogin;
 
-    PosgtresDB db;
+    final PosgtresDB db;
 
     public LoginForm(PosgtresDB db) {
         this.db = db;
@@ -47,7 +47,7 @@ public class LoginForm extends JFrame {
 
     void login(ActionEvent event) {
         try {
-            Map<String, ArrayList<Object>> result = db.selectWhere("USER", "login=\'" + loginField.getText() + "\'");
+            Map<String, ArrayList<Object>> result = db.selectWhere("USER", "login='" + loginField.getText() + "'");
             ArrayList<Object> password = result.get("password");
             if (password.size() == 0) {
                 JOptionPane.showMessageDialog(this, "No user with this login");

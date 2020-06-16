@@ -10,16 +10,16 @@ import java.util.Map;
 
 public class DbTableForm extends JFrame {
 
-    PosgtresDB db;
+    final PosgtresDB db;
     // String tableName;
-    JTable table;
-    DefaultTableModel tableModel;
-    JButton btnDelete;
-    JButton btnDrop;
-    JTextField inputDelete;
+    final JTable table;
+    final DefaultTableModel tableModel;
+    final JButton btnDelete;
+    final JButton btnDrop;
+    final JTextField inputDelete;
 
-    JComboBox<String> cmbTable;
-    JComboBox<String> cmbDeleteField;
+    final JComboBox<String> cmbTable;
+    final JComboBox<String> cmbDeleteField;
 
 
     DbTableForm(PosgtresDB db, String tableName) {
@@ -109,7 +109,7 @@ public class DbTableForm extends JFrame {
         if (dialogResult == JOptionPane.YES_OPTION) {
             try {
                 db.dropTable(tableName);
-                JOptionPane.showMessageDialog(this, "OK", "Droped", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "OK", "Dropped", JOptionPane.INFORMATION_MESSAGE);
                 loadTables(null);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -142,7 +142,7 @@ public class DbTableForm extends JFrame {
             }
             String tableName = (String) cmbTable.getSelectedItem();
             Map<String, ArrayList<Object>> data = db.select(tableName);
-            String[] columnNames = (String[])data.keySet().toArray();
+            String[] columnNames = (String[]) data.keySet().toArray();
             int rows = data.get(columnNames[0]).size();
             int columns = columnNames.length;
             Object[][] values = new Object[rows][];

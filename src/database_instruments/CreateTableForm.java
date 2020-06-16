@@ -6,13 +6,13 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class CreateTableForm extends JFrame {
-    ArrayList<DBFieldPanel> panels;
-    JButton btnAddField;
-    JButton btnCreate;
-    JPanel mainPanel;
-    JTextField inputTableName;
+    final ArrayList<DBFieldPanel> panels;
+    final JButton btnAddField;
+    final JButton btnCreate;
+    final JPanel mainPanel;
+    final JTextField inputTableName;
 
-    PosgtresDB db;
+    final PosgtresDB db;
 
     public CreateTableForm(PosgtresDB db) {
         this.db = db;
@@ -112,13 +112,13 @@ public class CreateTableForm extends JFrame {
 }
 
 class DBFieldPanel extends JPanel {
-    JTextField fieldName;
-    JComboBox<String> fieldType;
-    JButton btnDelete;
+    final JTextField fieldName;
+    final JComboBox<String> fieldType;
+    final JButton btnDelete;
 
     //TODO more types when support in DB class
 
-    static String[] possibleTypes = {
+    final static String[] possibleTypes = {
             "varchar(100)",
             "integer",
             "date",

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class ErrorChecker {
 
-    String emptyMarkError = "нет оценки";
-    String notNumberMark = "оценка введена не целым числом";
-    String incorrectMarkError = "оценка не соответствует пятибальной шкале";
+    final String emptyMarkError = "нет оценки";
+    final String notNumberMark = "оценка введена не целым числом";
+    final String incorrectMarkError = "оценка не соответствует пятибальной шкале";
 
     public ArrayList<String> checkTeacherForm(TeacherForm form) {
         ArrayList<String> errors = new ArrayList<>();
@@ -29,7 +29,7 @@ public class ErrorChecker {
         return errors;
     }
 
-    String emptyReportError = "Нет текста отчета";
+    final String emptyReportError = "Нет текста отчета";
 
     public ArrayList<String> checkDecanatForm(DecanatForm form) {
         ArrayList<String> errors = new ArrayList<>();

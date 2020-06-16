@@ -9,17 +9,17 @@ import java.util.Arrays;
 
 public class TeacherForm extends JFrame {
 
-    PosgtresDB db;
+    final PosgtresDB db;
 
     JComboBox<String> group;
     JComboBox<String> subject;
-    int teacher_id;
+    final int teacher_id;
 
     Integer[] group_ids;
     Integer[] subject_ids;
     Register register = null;
 
-    ArrayList<StudentPanel> studentPanels = new ArrayList<>();
+    final ArrayList<StudentPanel> studentPanels = new ArrayList<>();
 
     TeacherForm(PosgtresDB db, int teacher_id) {
         setLayout(null);
@@ -35,7 +35,7 @@ public class TeacherForm extends JFrame {
             Map<String, ArrayList<Object>> groups =
                     db.select("group");
             group_ids = Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class);
-            group = new JComboBox<String>(Arrays.copyOf(groups.get("name").toArray(), groups.get("name").size(), String[].class));
+            group = new JComboBox<>(Arrays.copyOf(groups.get("name").toArray(), groups.get("name").size(), String[].class));
             group.setBounds(130, 10, 100, 30);
             add(group);
         } catch (Exception ex) {
@@ -124,12 +124,12 @@ public class TeacherForm extends JFrame {
 }
 
 class StudentPanel extends JPanel {
-    JLabel lbl;
-    JTextField fields;
+    final JLabel lbl;
+    final JTextField fields;
 
-    StudentPanel(String studenName) {
+    StudentPanel(String studentName) {
         setLayout(null);
-        lbl = new JLabel(studenName);
+        lbl = new JLabel(studentName);
         lbl.setBounds(10, 10, 100, 20);
         add(lbl);
 

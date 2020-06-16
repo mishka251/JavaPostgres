@@ -10,16 +10,16 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class DecanatForm extends JFrame {
-    PosgtresDB db;
-    int user_id;
+    final PosgtresDB db;
+    final int user_id;
 
     JComboBox<Integer> register;
 
     Report report;
 
-    JTextPane reportEditor;
+    final JTextPane reportEditor;
 
-    JFileChooser fileChooser;
+    final JFileChooser fileChooser;
 
 
     DecanatForm(PosgtresDB db, int id) {
@@ -36,7 +36,7 @@ public class DecanatForm extends JFrame {
             Map<String, ArrayList<Object>> groups =
                     db.select("register");
             // group_ids = Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class);
-            register = new JComboBox<Integer>(Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class));
+            register = new JComboBox<>(Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class));
             register.setBounds(130, 10, 100, 30);
             add(register);
         } catch (Exception ex) {

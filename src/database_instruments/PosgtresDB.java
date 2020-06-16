@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PosgtresDB {
-//    String dbUrl = "jdbc:postgresql://localhost/laba9Db";
+    //    String dbUrl = "jdbc:postgresql://localhost/laba9Db";
 //    String login = "Laba9Role";
 //    String password = "laba9_password";
     Connection connection;
@@ -60,7 +60,7 @@ public class PosgtresDB {
         Statement statement = connection.createStatement();
 
         statement.execute(sql.toString());
-       // statement.close();
+        // statement.close();
     }
 
     public long insert(String tableName, String[] columnNames, Object[] values) throws SQLException {
@@ -98,7 +98,7 @@ public class PosgtresDB {
         int affectedRows = statement.executeUpdate();
 
         if (affectedRows == 0) {
-          //  statement.close();
+            //  statement.close();
             throw new SQLException("Creating user failed, no rows affected.");
         }
 
@@ -107,7 +107,7 @@ public class PosgtresDB {
                 //statement.close();
                 return generatedKeys.getLong(1);
             } else {
-              //  statement.close();
+                //  statement.close();
                 throw new SQLException("Creating user failed, no ID obtained.");
             }
         }
@@ -128,7 +128,7 @@ public class PosgtresDB {
             statement.setObject(1, value);
         }
         statement.execute();
-      //  statement.close();
+        //  statement.close();
     }
 
     public void dropTable(String table) throws SQLException {
@@ -138,11 +138,11 @@ public class PosgtresDB {
         PreparedStatement statement = connection.prepareStatement(sql);
 
         statement.execute();
-       // statement.close();
+        // statement.close();
     }
 
     public Map<String, ArrayList<Object>> select(String table) throws SQLException {
-        String sql = "SELECT * FROM '"+table+"'";
+        String sql = "SELECT * FROM '" + table + "'";
         PreparedStatement statement = connection.prepareStatement(sql);
 //statement.setString(1, table);
         ResultSet resultSet = statement.executeQuery();
@@ -191,7 +191,7 @@ public class PosgtresDB {
             }
         }
 
-       // statement.close();
+        // statement.close();
         return results;
     }
 
@@ -222,7 +222,7 @@ public class PosgtresDB {
             }
         }
 
-       // statement.close();
+        // statement.close();
         return results;
     }
 
@@ -253,7 +253,7 @@ public class PosgtresDB {
             }
         }
 
-       // statement.close();
+        // statement.close();
         return results;
     }
 

@@ -1,12 +1,12 @@
 package database_instruments;
 
 public class TableColumn {
-    public String name;
-    public String type;
+    final public String name;
+    final public String type;
 
-    public TableColumn(String name, String type){
-        this.name=name;
-        this.type=type;
+    public TableColumn(String name, String type) {
+        this.name = name;
+        this.type = type;
     }
 
     @Override

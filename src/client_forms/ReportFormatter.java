@@ -3,9 +3,9 @@ package client_forms;
 import java.text.SimpleDateFormat;
 
 public class ReportFormatter {
-    Report report;
+    final Report report;
 
-    static String template = "Отчёт по группе _группа_\n" +
+    final static String template = "Отчёт по группе _группа_\n" +
             "по предмету _предмет_\n" +
             "Отличников - _отличников_\n" +
             "Ударников - _ударников_\n" +

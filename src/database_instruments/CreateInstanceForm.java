@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreateInstanceForm extends JFrame {
-    PosgtresDB db;
-    String tableName;
+    final PosgtresDB db;
+    final String tableName;
 
     ArrayList<TableColumn> columns;
-    Map<TableColumn, FieldPanel> inputs;
+    final Map<TableColumn, FieldPanel> inputs;
 
-    JButton btnInsert;
+    final JButton btnInsert;
 
     public CreateInstanceForm(PosgtresDB db, String tableName, Map<String, Object> filledFields) {
         this.db = db;
@@ -100,7 +100,7 @@ public class CreateInstanceForm extends JFrame {
 
 
 class FieldPanel extends JPanel {
-    JTextField inputValue;
+    final JTextField inputValue;
 
     FieldPanel(TableColumn column, Map<String, Object> filledFields) {
         setLayout(null);

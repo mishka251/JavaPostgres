@@ -12,11 +12,11 @@ import java.util.Map;
  * Ведомость
  */
 public class Register {
-    int teacherId;
-    int groupId;
-    int subjectId;
+    final int teacherId;
+    final int groupId;
+    final int subjectId;
 
-    PosgtresDB db;
+    final PosgtresDB db;
 
 
     String teacherFio;
@@ -38,8 +38,8 @@ public class Register {
 
     public void loadFromDb() throws SQLException {
         Map<String, ArrayList<Object>> studentsTable = db.selectWhere("student", "surname", "ASC", "group_id=" + groupId);
-        studentNames = Arrays.copyOf( studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
-        studentIds = Arrays.copyOf( studentsTable.get("id").toArray(), studentsTable.get("id").size(), Integer[].class);
+        studentNames = Arrays.copyOf(studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
+        studentIds = Arrays.copyOf(studentsTable.get("id").toArray(), studentsTable.get("id").size(), Integer[].class);
 
         Map<String, ArrayList<Object>> groupTable = db.selectWhere("group", "id=" + groupId);
         groupNumber = (String) groupTable.get("number").get(0);
@@ -47,8 +47,8 @@ public class Register {
 
         Map<String, ArrayList<Object>> teacherTable = db.selectWhere("user", "id=" + teacherId);
         teacherFio = (String) teacherTable.get("surname").get(0) +
-                (String) teacherTable.get("name").get(0) +
-                (String) teacherTable.get("patronymic").get(0);
+                teacherTable.get("name").get(0) +
+                teacherTable.get("patronymic").get(0);
 
         Map<String, ArrayList<Object>> subjectTable = db.selectWhere("subjects", "id=" + teacherId);
         subjectName = (String) subjectTable.get("name").get(0);

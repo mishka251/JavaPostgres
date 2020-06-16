@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Map;
 
 public class Report {
-    PosgtresDB db;
+    final PosgtresDB db;
 
     int groupId;
     int subjectId;
@@ -26,7 +26,7 @@ public class Report {
     String groupSpeciality;
     String subjectName;
 
-    int registerId;
+    final int registerId;
     Date date;
     String controlType;
 
