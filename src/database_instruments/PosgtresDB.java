@@ -15,7 +15,7 @@ public class PosgtresDB {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            System.out.println("SQlite JDBC Driver is not found. Include it in your library path ");
+            System.out.println("SQLite JDBC Driver is not found. Include it in your library path ");
             e.printStackTrace();
             return;
         }
@@ -147,12 +147,12 @@ public class PosgtresDB {
 //statement.setString(1, table);
         ResultSet resultSet = statement.executeQuery();
         Map<String, ArrayList<Object>> results = new HashMap<>();
-        ResultSetMetaData rsmd = resultSet.getMetaData();
-        int columnCount = rsmd.getColumnCount();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
 
 // The column count starts from 1
         for (int i = 1; i <= columnCount; i++) {
-            String name = rsmd.getColumnName(i);
+            String name = metaData.getColumnName(i);
             results.put(name, new ArrayList<>());
         }
 
@@ -175,12 +175,12 @@ public class PosgtresDB {
 
         ResultSet resultSet = statement.executeQuery();
         Map<String, ArrayList<Object>> results = new HashMap<>();
-        ResultSetMetaData rsmd = resultSet.getMetaData();
-        int columnCount = rsmd.getColumnCount();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
 
 // The column count starts from 1
         for (int i = 1; i <= columnCount; i++) {
-            String name = rsmd.getColumnName(i);
+            String name = metaData.getColumnName(i);
             results.put(name, new ArrayList<>());
         }
 
