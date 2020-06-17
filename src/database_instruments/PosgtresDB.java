@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PosgtresDB {
-    //    String dbUrl = "jdbc:postgresql://localhost/laba9Db";
-//    String login = "Laba9Role";
-//    String password = "laba9_password";
     Connection connection;
 
     public void connect() {
@@ -23,7 +20,7 @@ public class PosgtresDB {
         connection = null;
 
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:test_sqlite.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:test123.db");
             // .getConnection(dbUrl, login, password);
 
         } catch (SQLException e) {
@@ -51,6 +48,8 @@ public class PosgtresDB {
             sql.append(column.name);
             sql.append(" ");
             sql.append(column.type);
+            sql.append(" ");
+            sql.append(column.extra);
             if (i != columns.length - 1) {
                 sql.append(",");
             }

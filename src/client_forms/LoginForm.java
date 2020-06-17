@@ -17,6 +17,7 @@ public class LoginForm extends JFrame {
 
     public LoginForm(PosgtresDB db) {
         this.db = db;
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
         setSize(120, 210);
