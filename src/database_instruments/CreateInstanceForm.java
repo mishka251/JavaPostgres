@@ -67,13 +67,17 @@ public class CreateInstanceForm extends JFrame {
                 String inputValue = inputs.get(column).getValue();
                 switch (column.type) {
                     case "date":
+                    case "DATE":
                         values[i] = parser.parse(inputValue);
                         break;
                     case "integer":
+                    case "INTEGER":
                     case "int4":
                         values[i] = Integer.parseInt(inputValue);
                         break;
                     case "varchar":
+                    case "VARCHAR":
+                    case "VARCHAR (100)":
                     case "text":
                         values[i] = inputValue;
                         break;

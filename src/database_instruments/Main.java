@@ -24,21 +24,21 @@ public class Main {
         db.createTable("[group]",
                 new TableColumn[]{
                         new TableColumn("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT"),
-                        new TableColumn("name", "VARCHAR (20)"),
-                        new TableColumn("speciality", "VARCHAR (20)"),
-                        new TableColumn("number", "VARCHAR (20)"),
-                        new TableColumn("word_code", "VARCHAR (20)"),
-                        new TableColumn("number_code", "VARCHAR (20)"),
+                        new TableColumn("name", "VARCHAR (100)"),
+                        new TableColumn("speciality", "VARCHAR (100)"),
+                        new TableColumn("number", "VARCHAR (100)"),
+                        new TableColumn("word_code", "VARCHAR (100)"),
+                        new TableColumn("number_code", "VARCHAR (100)"),
                         new TableColumn("department_id", "INTEGER", "REFERENCES department (id)")
                 });
 
         db.createTable("student",
                 new TableColumn[]{
                         new TableColumn("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT"),
-                        new TableColumn("name", "VARCHAR (80)"),
-                        new TableColumn("surname", "VARCHAR (80)"),
-                        new TableColumn("patronymic", "VARCHAR (80)"),
-                        new TableColumn("no_zk", "VARCHAR (80)"),
+                        new TableColumn("name", "VARCHAR (100)"),
+                        new TableColumn("surname", "VARCHAR (100)"),
+                        new TableColumn("patronymic", "VARCHAR (100)"),
+                        new TableColumn("no_zk", "VARCHAR (100)"),
                         new TableColumn("group_id", "INTEGER", "REFERENCES [group] (id)")
                 });
 
@@ -51,20 +51,20 @@ public class Main {
         db.createTable("user",
                 new TableColumn[]{
                         new TableColumn("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT"),
-                        new TableColumn("name", "VARCHAR (80)"),
-                        new TableColumn("surname", "VARCHAR (80)"),
-                        new TableColumn("patronymic", "VARCHAR (80)"),
-                        new TableColumn("position", "VARCHAR (80)"),
-                        new TableColumn("email", "VARCHAR (80)"),
-                        new TableColumn("phone", "VARCHAR (80)"),
-                        new TableColumn("login", "VARCHAR (80)"),
-                        new TableColumn("password", "VARCHAR (80)"),
+                        new TableColumn("name", "VARCHAR (100)"),
+                        new TableColumn("surname", "VARCHAR (100)"),
+                        new TableColumn("patronymic", "VARCHAR (100)"),
+                        new TableColumn("position", "VARCHAR (100)"),
+                        new TableColumn("email", "VARCHAR (100)"),
+                        new TableColumn("phone", "VARCHAR (100)"),
+                        new TableColumn("login", "VARCHAR (100)"),
+                        new TableColumn("password", "VARCHAR (100)"),
                 });
 
         db.createTable("register",
                 new TableColumn[]{
                         new TableColumn("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT"),
-                        new TableColumn("control_type", "VARCHAR (80)"),
+                        new TableColumn("control_type", "VARCHAR (100)"),
                         new TableColumn("date", "DATE"),
                         new TableColumn("subject_id", "INTEGER", "REFERENCES subjects (id)"),
                         new TableColumn("group_id", "INTEGER", "REFERENCES [group] (id)"),
@@ -120,6 +120,17 @@ public class Main {
                         "decanat",
                         "decanat",
                         "decanat",
+                });
+
+        db.insert("user", new String[]{
+                        "login",
+                        "password",
+                        "position",
+                },
+                new Object[]{
+                        "admin",
+                        "admin",
+                        "admin",
                 });
     }
 

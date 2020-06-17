@@ -4,9 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 public class DbTableForm extends JFrame {
 
@@ -20,9 +18,10 @@ public class DbTableForm extends JFrame {
 
     final JComboBox<String> cmbTable;
     final JComboBox<String> cmbDeleteField;
+    final JButton btnInsert;
 
 
-    DbTableForm(PosgtresDB db, String tableName) {
+    public DbTableForm(PosgtresDB db, String tableName) {
         this.db = db;
         // this.tableName = tableName;
 
@@ -79,9 +78,14 @@ public class DbTableForm extends JFrame {
         loadTables(tableName);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        btnInsert = new JButton("Add data");
+        btnInsert.setBounds(600, 300, 90, 20);
+        add(btnInsert);
+
         btnDrop.addActionListener(this::dropTable);
         btnDelete.addActionListener(this::delete);
         cmbTable.addActionListener((event) -> fillTable());
+        btnInsert.addActionListener((event)->new CreateInstanceForm(db, (String)this.cmbTable.getSelectedItem(), new HashMap<>()));
     }
 
     void loadTables(String tableName) {
@@ -142,7 +146,7 @@ public class DbTableForm extends JFrame {
             }
             String tableName = (String) cmbTable.getSelectedItem();
             Map<String, ArrayList<Object>> data = db.select(tableName);
-            String[] columnNames = (String[]) data.keySet().toArray();
+            String[] columnNames = Arrays.copyOf(data.keySet().toArray(), data.keySet().size(), String[].class);
             int rows = data.get(columnNames[0]).size();
             int columns = columnNames.length;
             Object[][] values = new Object[rows][];

@@ -64,9 +64,9 @@ public class PosgtresDB {
 
     public long insert(String tableName, String[] columnNames, Object[] values) throws SQLException {
         StringBuilder sql = new StringBuilder();
-        sql.append("INSERT INTO ");
+        sql.append("INSERT INTO '");
         sql.append(tableName);
-        sql.append("(");
+        sql.append("' (");
 
 
         for (int i = 0; i < columnNames.length; i++) {

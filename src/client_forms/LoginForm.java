@@ -1,10 +1,13 @@
 package client_forms;
 
+import database_instruments.CreateInstanceForm;
+import database_instruments.DbTableForm;
 import database_instruments.PosgtresDB;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class LoginForm extends JFrame {
@@ -65,7 +68,9 @@ public class LoginForm extends JFrame {
                 new TeacherForm(db, id);
             } else if ("decanat".equals(result.get("position").get(0))) {
                 new DecanatForm(db, id);
-            } else {
+            } else if ("admin".equals(result.get("position").get(0))) {
+                new DbTableForm(db, "user"); //new DecanatForm(db, id);
+            }else {
                 JOptionPane.showMessageDialog(this, "Неопределенный тип сотрудика");
             }
         } catch (Exception ex) {
