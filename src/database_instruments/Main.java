@@ -4,6 +4,7 @@ import client_forms.LoginForm;
 
 import javax.swing.*;
 import java.sql.SQLException;
+import java.util.Random;
 
 public class Main {
 
@@ -21,7 +22,7 @@ public class Main {
                         new TableColumn("faculty_id", "INTEGER", "REFERENCES faculty (id)")
                 });
 
-        db.createTable("[group]",
+        db.createTable("group",
                 new TableColumn[]{
                         new TableColumn("id", "INTEGER", "PRIMARY KEY AUTOINCREMENT"),
                         new TableColumn("name", "VARCHAR (100)"),
@@ -134,6 +135,22 @@ public class Main {
                 });
     }
 
+    static String getRandomName() {
+        String[] names = new String[]{
+                "Иван", "Петр", "Сидор", "Вася", "Саша", "Азат"
+        };
+        Random r = new Random();
+        return names[r.nextInt(names.length)];
+    }
+
+    static String getRandomSurname() {
+        String[] names = new String[]{
+                "Иванов", "Петров", "Сидоров", "Васильев", "Чернов", "Юсупов"
+        };
+        Random r = new Random();
+        return names[r.nextInt(names.length)];
+    }
+
     static void createStudents(PosgtresDB db) throws SQLException {
         long fac_id = db.insert("faculty", new String[]{"name"}, new Object[]{"ФИРТ"});
         long caf_id = db.insert("department", new String[]{
@@ -145,36 +162,40 @@ public class Main {
                         fac_id
                 });
 
-        long group_id = db.insert("[group]", new String[]{
-                        "name",
-                        "department_id"
-                },
-                new Object[]{
-                        "ИТ-109М",
-                        caf_id
-                });
+        String[] groupNames = new String[]{
+                "ЭАС",
+                "ПИ-1",
+                "ПИ-2"
+        };
 
-        db.insert("student", new String[]{
-                        "name",
-                        "surname",
-                        "group_id"
-                },
-                new Object[]{
-                        "Иван",
-                        "Иванов",
-                        group_id
-                });
+        long[] groups = new long[groupNames.length];
+        for (int i = 0; i < groupNames.length; i++) {
+            groups[i] = db.insert("group", new String[]{
+                            "name",
+                            "department_id"
+                    },
+                    new Object[]{
+                            groupNames[i],
+                            caf_id
+                    });
+        }
 
-        db.insert("student", new String[]{
-                        "name",
-                        "surname",
-                        "group_id"
-                },
-                new Object[]{
-                        "Сидор",
-                        "Петров",
-                        group_id
-                });
+
+        for (long group : groups) {
+            for (int i = 0; i < 20; i++) {
+                db.insert("student", new String[]{
+                                "name",
+                                "surname",
+                                "group_id"
+                        },
+                        new Object[]{
+                                getRandomName(),
+                                getRandomSurname(),
+                                group
+                        });
+            }
+        }
+
 
         db.insert("subjects",
                 new String[]{"name"},

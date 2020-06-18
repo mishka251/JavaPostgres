@@ -38,9 +38,9 @@ public class PosgtresDB {
 
     public void createTable(String tableName, TableColumn[] columns) throws SQLException {
         StringBuilder sql = new StringBuilder();
-        sql.append("CREATE TABLE ");
+        sql.append("CREATE TABLE '");
         sql.append(tableName);
-        sql.append("(");
+        sql.append("' (");
 
 
         for (int i = 0; i < columns.length; i++) {
