@@ -87,6 +87,12 @@ public class TeacherForm extends JFrame {
 
 
     void loadStudents() {
+        for (StudentPanel panel : studentPanels) {
+            studentsPanel.remove(panel);
+        }
+        repaint();
+        studentPanels.clear();
+
         int groupId = group_ids[group.getSelectedIndex()];
         int subjectId = subject_ids[subject.getSelectedIndex()];
         register = new Register(db, teacher_id, groupId, subjectId);
@@ -96,15 +102,13 @@ public class TeacherForm extends JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-        studentPanels.clear();
-
         for (int i = 0; i < register.studentNames.length; i++) {
             StudentPanel panel = new StudentPanel(register.studentNames[i], register.studentHasMark[i], register.studentMarks[i]);
-            panel.setBounds(5,  40 * i, 250, 30);
+            panel.setBounds(5, 30 * i, 250, 20);
             studentsPanel.add(panel);
             studentPanels.add(panel);
         }
-        studentsPanel.setPreferredSize(new Dimension( 300, 40+30*register.studentNames.length));
+        studentsPanel.setPreferredSize(new Dimension(300, 40 + 30 * register.studentNames.length));
         scroll.setViewportView(studentsPanel);
         repaint();
     }
@@ -148,11 +152,11 @@ class StudentPanel extends JPanel {
     StudentPanel(String studentName, boolean isReadOnly, Integer mark) {
         setLayout(null);
         lbl = new JLabel(studentName);
-        lbl.setBounds(10, 10, 100, 20);
+        lbl.setBounds(0, 0, 100, 15);
         add(lbl);
 
         fields = new JTextField();
-        fields.setBounds(120, 10, 100, 20);
+        fields.setBounds(120, 0, 100, 15);
         fields.setEditable(!isReadOnly);
         if (mark != null) {
             fields.setText(mark.toString());
