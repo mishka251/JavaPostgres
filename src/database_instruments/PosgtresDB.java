@@ -258,9 +258,9 @@ public class PosgtresDB {
 
     public void update(String tableName, String condition, String[] updatedColumns, Object[] newValues) throws SQLException {
         StringBuilder sql = new StringBuilder();
-        sql.append("UPDATE ");
+        sql.append("UPDATE '");
         sql.append(tableName);
-        sql.append(" SET ");
+        sql.append("' SET ");
         for (int i = 0; i < updatedColumns.length; i++) {
             sql.append(updatedColumns[i]);
             sql.append("=?");
@@ -268,15 +268,16 @@ public class PosgtresDB {
                 sql.append(",");
             }
         }
-        sql.append("WHERE ");
+        sql.append(" WHERE ");
         sql.append(condition);
 
         PreparedStatement statement = connection.prepareStatement(sql.toString());
-        for (Object value : newValues) {
+        for (int i =0; i<newValues.length; i++) {
+            Object value = newValues[i];
             if (value instanceof java.util.Date) {
-                statement.setObject(1, value, Types.DATE);
+                statement.setObject(i+1, value, Types.DATE);
             } else {
-                statement.setObject(1, value);
+                statement.setObject(i+1, value);
             }
         }
 

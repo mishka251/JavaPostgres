@@ -1,13 +1,11 @@
 package client_forms;
 
-import database_instruments.CreateInstanceForm;
 import database_instruments.DbTableForm;
 import database_instruments.PosgtresDB;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class LoginForm extends JFrame {

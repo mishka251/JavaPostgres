@@ -8,42 +8,32 @@ import java.util.*;
 
 public class DbTableForm extends JFrame {
 
-    final PosgtresDB db;
-    // String tableName;
-    final JTable table;
-    final DefaultTableModel tableModel;
-    final JButton btnDelete;
-    final JButton btnDrop;
-    final JTextField inputDelete;
+    PosgtresDB db;
+    String tableName;
+    JTable table;
+    DefaultTableModel tableModel;
+    JButton btnDelete;
+    JButton btnDrop;
+    JTextField inputDelete;
 
-    final JComboBox<String> cmbTable;
-    final JComboBox<String> cmbDeleteField;
-    final JButton btnInsert;
-
+    JComboBox<String> cmbTable;
+    JComboBox<String> cmbDeleteField;
+    JButton btnInsert;
+    ArrayList<String> extraReadOnlyColumns = new ArrayList<String>();
 
     public DbTableForm(PosgtresDB db, String tableName) {
         this.db = db;
-        // this.tableName = tableName;
+        this.tableName = tableName;
+        extraReadOnlyColumns.add("id");
 
         setLayout(null);
         setSize(700, 400);
         setVisible(true);
-        SimpleDateFormat sd = new SimpleDateFormat("dd.MM.yyyy");
-        setTitle("Text Editor. Rezyapov D.N. Вариант 5  " + sd.format(new Date()));
 
         JPanel panel1 = new JPanel();
         panel1.setBounds(20, 50, 660, 230);
         panel1.setVisible(true);
         add(panel1);
-
-        JLabel lblTable = new JLabel("Table");
-        lblTable.setBounds(0, 5, 50, 20);
-        add(lblTable);
-
-        cmbTable = new JComboBox<>();
-        cmbTable.setBounds(60, 10, 60, 20);
-        add(cmbTable);
-
 
         JLabel lblDeletedField = new JLabel("Поле для удаления");
         lblDeletedField.setBounds(130, 10, 100, 20);
@@ -65,39 +55,75 @@ public class DbTableForm extends JFrame {
         btnDelete.setBounds(550, 10, 90, 20);
         add(btnDelete);
 
-        tableModel = new DefaultTableModel();
+        tableModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                String columnName = this.getColumnName(column);
+                for(String colName:extraReadOnlyColumns){
+                    if(colName.equals(columnName)){
+                        return false;
+                    }
+                }
+                return true;// !.equals("id");//super.isCellEditable(row, column);
+            }
+        };
 
         table = new JTable(tableModel);
         panel1.add(new JScrollPane(table));
 
-        btnDrop = new JButton("Drop table");
-        btnDrop.setBounds(550, 330, 90, 20);
-        add(btnDrop);
+        if (tableName == null) {
+            setTitle("Редактор таблиц");
+            JLabel lblTable = new JLabel("Table");
+            lblTable.setBounds(0, 5, 50, 20);
+            add(lblTable);
+
+            cmbTable = new JComboBox<>();
+            cmbTable.setBounds(60, 10, 60, 20);
+            cmbTable.addActionListener((event) -> {
+                fillTable();
+                this.tableName = (String) cmbTable.getSelectedItem();
+            });
+            add(cmbTable);
+            loadTables();
+
+            btnDrop = new JButton("Drop table");
+            btnDrop.setBounds(550, 330, 90, 20);
+            add(btnDrop);
+            btnDrop.addActionListener(this::dropTable);
+
+        } else {
+            setTitle("Редактор таблицы " + tableName);
+            fillTable();
+        }
 
         //this.fillTable();
-        loadTables(tableName);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         btnInsert = new JButton("Add data");
         btnInsert.setBounds(600, 300, 90, 20);
         add(btnInsert);
 
-        btnDrop.addActionListener(this::dropTable);
+        JButton btnUpdate = new JButton("Update");
+        btnUpdate.setBounds(600, 270, 90, 20);
+        add(btnUpdate);
+
+        btnUpdate.addActionListener((event) -> this.update());
         btnDelete.addActionListener(this::delete);
-        cmbTable.addActionListener((event) -> fillTable());
-        btnInsert.addActionListener((event)->new CreateInstanceForm(db, (String)this.cmbTable.getSelectedItem(), new HashMap<>()));
+        btnInsert.addActionListener((event) -> new CreateInstanceForm(db, tableName, new HashMap<>()));
     }
 
-    void loadTables(String tableName) {
+    public DbTableForm(PosgtresDB db, String tableName, String[] extraReadOnlyColumns){
+        this(db, tableName);
+        this.extraReadOnlyColumns.addAll(Arrays.asList(extraReadOnlyColumns));
+    }
+
+    void loadTables() {
         try {
             ArrayList<String> tables = db.getTableNames();
             DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cmbTable.getModel();
             model.removeAllElements();
             for (String table : tables) {
                 model.addElement(table);
-            }
-            if (tableName != null) {
-                model.setSelectedItem(tableName);
             }
 
             cmbTable.setModel(model);
@@ -108,13 +134,17 @@ public class DbTableForm extends JFrame {
     }
 
     void dropTable(ActionEvent event) {
-        String tableName = (String) cmbTable.getSelectedItem();
+        //(String) cmbTable.getSelectedItem();
         int dialogResult = JOptionPane.showConfirmDialog(this, "Точно удалить таблицу?");
         if (dialogResult == JOptionPane.YES_OPTION) {
             try {
                 db.dropTable(tableName);
                 JOptionPane.showMessageDialog(this, "OK", "Dropped", JOptionPane.INFORMATION_MESSAGE);
-                loadTables(null);
+                if (cmbTable != null) {
+                    loadTables();
+                } else {
+                    dispose();
+                }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -123,7 +153,7 @@ public class DbTableForm extends JFrame {
 
     void delete(ActionEvent event) {
         String deleteCondition = inputDelete.getText();
-        String tableName = (String) cmbTable.getSelectedItem();
+        // String tableName = (String) cmbTable.getSelectedItem();
         String deleteField = (String) cmbDeleteField.getSelectedItem();
         if (deleteCondition == null || deleteCondition.equals("")
                 || deleteField == null || deleteField.equals("")) {
@@ -144,7 +174,7 @@ public class DbTableForm extends JFrame {
             while (tableModel.getRowCount() > 0) {
                 tableModel.removeRow(0);
             }
-            String tableName = (String) cmbTable.getSelectedItem();
+            // String tableName = (String) cmbTable.getSelectedItem();
             Map<String, ArrayList<Object>> data = db.select(tableName);
             String[] columnNames = Arrays.copyOf(data.keySet().toArray(), data.keySet().size(), String[].class);
             int rows = data.get(columnNames[0]).size();
@@ -171,5 +201,31 @@ public class DbTableForm extends JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    void update() {
+        int idColumnIndex = table.getColumn("id").getModelIndex();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            long id = (int) tableModel.getValueAt(i, idColumnIndex);
+            ArrayList<String> colNames = new ArrayList<>();
+            ArrayList<Object> colValues = new ArrayList<>();
+
+            for (int j = 0; j < tableModel.getColumnCount(); j++) {
+                String name = tableModel.getColumnName(j);
+                Object val = tableModel.getValueAt(i, j);
+                if (!name.equals("id")) {
+                    colNames.add(name);
+                    colValues.add(val);
+                }
+            }
+            try {
+                db.update((String) tableName, "id=" + id,
+                        Arrays.copyOf(colNames.toArray(), colNames.size(), String[].class), colValues.toArray());
+                //JOptionPane.showMessageDialog(this, "OK");
+            } catch (Exception ex) {
+                // JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        this.fillTable();
     }
 }

@@ -31,7 +31,7 @@ public class ErrorChecker {
 
     final String emptyReportError = "Нет текста отчета";
 
-    public ArrayList<String> checkDecanatForm(DecanatForm form) {
+    public ArrayList<String> checkDecanatForm(UspevReportForm form) {
         ArrayList<String> errors = new ArrayList<>();
         String text = form.reportEditor.getText();
         if (text == null || text.trim().equals("")) {
