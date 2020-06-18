@@ -4,9 +4,6 @@ import database_instruments.DbTableForm;
 import database_instruments.PosgtresDB;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
 
 public class DecanatForm extends JFrame {
     final PosgtresDB db;
@@ -19,62 +16,28 @@ public class DecanatForm extends JFrame {
         this.user_id = id;
         setTitle("Форма сотрудника деканата");
 
-//        JLabel lblGroups = new JLabel("Ведомость №");
-//        lblGroups.setBounds(10, 10, 100, 40);
-//        add(lblGroups);
-
-//        try {
-//            Map<String, ArrayList<Object>> groups =
-//                    db.select("register");
-//            // group_ids = Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class);
-//            register = new JComboBox<>(Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class));
-//            register.setBounds(130, 10, 100, 30);
-//            add(register);
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(this, ex.getMessage());
-//        }
-//
-//
-//        JButton btnLoad = new JButton("Load");
-//        btnLoad.setBounds(390, 40, 100, 30);
-//        add(btnLoad);
-//        btnLoad.addActionListener(event -> this.loadReport());
-//
-//        JButton btnSave = new JButton("Save");
-//        btnSave.setBounds(390, 80, 100, 30);
-//        add(btnSave);
-//        btnSave.addActionListener(event -> this.saveReport());
-
-
-//        reportEditor = new JTextPane();
-//        reportEditor.setBounds(10, 100, 400, 300);
-//        add(reportEditor);
-//
-//        fileChooser = new JFileChooser();
-
-
-        JButton btnStudentsTable = new JButton("Students");
-        btnStudentsTable.setBounds(10, 10, 100, 20);
+        JButton btnStudentsTable = new JButton("Редактирвоание студентов");
+        btnStudentsTable.setBounds(50, 10, 200, 20);
         add(btnStudentsTable);
 
-        JButton btnGroups = new JButton("Groups");
-        btnGroups.setBounds(10, 40, 100, 20);
+        JButton btnGroups = new JButton("Редактирвование групп");
+        btnGroups.setBounds(50, 40, 200, 20);
         add(btnGroups);
 
-        JButton btnMarks = new JButton("Marks");
-        btnMarks.setBounds(10, 70, 100, 20);
+        JButton btnMarks = new JButton("Редактирвоание оценок");
+        btnMarks.setBounds(50, 70, 200, 20);
         add(btnMarks);
 
-        JButton btnSubjects = new JButton("Subjects");
-        btnSubjects.setBounds(10, 100, 100, 20);
+        JButton btnSubjects = new JButton("Редактирование предметов");
+        btnSubjects.setBounds(50, 100, 200, 20);
         add(btnSubjects);
 
-        JButton btnReport = new JButton("Report");
-        btnReport.setBounds(10, 130, 100, 20);
+        JButton btnReport = new JButton("Отчеты");
+        btnReport.setBounds(50, 130, 200, 20);
         add(btnReport);
 
-        JButton btnRating = new JButton("Rating");
-        btnRating.setBounds(10, 160, 100, 20);
+        JButton btnRating = new JButton("Рейтинги");
+        btnRating.setBounds(50, 160, 200, 20);
         add(btnRating);
 
 
@@ -86,7 +49,7 @@ public class DecanatForm extends JFrame {
         btnRating.addActionListener((event) -> this.showRating());
 
 
-        setSize(500, 400);
+        setSize(350, 240);
         setVisible(true);
     }
 

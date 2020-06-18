@@ -33,26 +33,26 @@ public class DbTableForm extends JFrame {
         JPanel panel1 = new JPanel();
         panel1.setBounds(20, 50, 660, 230);
         panel1.setVisible(true);
-        add(panel1);
+       // add(panel1);
 
         JLabel lblDeletedField = new JLabel("Поле для удаления");
-        lblDeletedField.setBounds(130, 10, 100, 20);
+        lblDeletedField.setBounds(10, 10, 130, 20);
         add(lblDeletedField);
 
         cmbDeleteField = new JComboBox<>();
-        cmbDeleteField.setBounds(240, 10, 80, 20);
+        cmbDeleteField.setBounds(150, 10, 120, 20);
         add(cmbDeleteField);
 
-        JLabel lblInput = new JLabel("Значеине удаляемого");
-        lblInput.setBounds(330, 10, 100, 20);
+        JLabel lblInput = new JLabel("Значение удаляемого");
+        lblInput.setBounds(300, 10, 130, 20);
         add(lblInput);
 
         inputDelete = new JTextField();
         inputDelete.setBounds(440, 10, 100, 20);
         add(inputDelete);
 
-        btnDelete = new JButton("Удалить строк");
-        btnDelete.setBounds(550, 10, 90, 20);
+        btnDelete = new JButton("Удалить строки");
+        btnDelete.setBounds(550, 10, 130, 20);
         add(btnDelete);
 
         tableModel = new DefaultTableModel() {
@@ -69,7 +69,10 @@ public class DbTableForm extends JFrame {
         };
 
         table = new JTable(tableModel);
-        panel1.add(new JScrollPane(table));
+        JScrollPane scroll =  new JScrollPane(table);
+        scroll.setBounds(20, 50, 660, 230);
+        add(scroll);
+       // panel1.add();
 
         if (tableName == null) {
             setTitle("Редактор таблиц");
@@ -99,12 +102,12 @@ public class DbTableForm extends JFrame {
         //this.fillTable();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        btnInsert = new JButton("Add data");
-        btnInsert.setBounds(600, 300, 90, 20);
+        btnInsert = new JButton("Добавить строку");
+        btnInsert.setBounds(530, 300, 140, 20);
         add(btnInsert);
 
-        JButton btnUpdate = new JButton("Update");
-        btnUpdate.setBounds(600, 270, 90, 20);
+        JButton btnUpdate = new JButton("Обновить БД");
+        btnUpdate.setBounds(400, 300, 120, 20);
         add(btnUpdate);
 
         btnUpdate.addActionListener((event) -> this.update());

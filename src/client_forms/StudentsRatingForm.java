@@ -24,7 +24,7 @@ public class StudentsRatingForm extends JFrame {
     StudentsRatingForm(PosgtresDB db, int user_id) {
         this.db = db;
         this.user_id = user_id;
-
+setTitle("Рейтинг студентов");
         setLayout(null);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,8 +46,8 @@ public class StudentsRatingForm extends JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-        JButton btnLoad = new JButton("Load");
-        btnLoad.setBounds(390, 40, 100, 30);
+        JButton btnLoad = new JButton("Загрузить рейтинг");
+        btnLoad.setBounds(320, 40, 150, 30);
         add(btnLoad);
         btnLoad.addActionListener(event -> this.loadStudents());
 
@@ -131,8 +131,6 @@ public class StudentsRatingForm extends JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-
-
     }
 }
 

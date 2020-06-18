@@ -45,7 +45,14 @@ public class Report {
 
 
         Map<String, ArrayList<Object>> studentsTable = db.selectWhere("student", "surname", "ASC", "group_id=" + groupId);
-        studentNames = Arrays.copyOf(studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
+        String[] studentNames = Arrays.copyOf(studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
+        String[] studentSurnames = Arrays.copyOf(studentsTable.get("surname").toArray(), studentsTable.get("surname").size(), String[].class);
+
+        this.studentNames = new String[studentNames.length];
+        for(int i =0; i<studentNames.length; i++){
+            this.studentNames[i] = studentSurnames[i]+" "+studentNames[i];
+        }
+
         studentIds = Arrays.copyOf(studentsTable.get("id").toArray(), studentsTable.get("id").size(), Integer[].class);
 
         Map<String, ArrayList<Object>> groupTable = db.selectWhere("group", "id=" + groupId);

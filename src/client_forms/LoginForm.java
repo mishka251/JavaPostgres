@@ -20,27 +20,28 @@ public class LoginForm extends JFrame {
         this.db = db;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
+        setTitle("Вход в систему");
 
-        setSize(120, 210);
+        setSize(320, 210);
 
         JLabel lblLogin = new JLabel("Login");
-        lblLogin.setBounds(10, 10, 100, 20);
+        lblLogin.setBounds(110, 10, 100, 20);
         add(lblLogin);
 
         loginField = new JTextField();
-        loginField.setBounds(10, 40, 100, 20);
+        loginField.setBounds(110, 40, 100, 20);
         add(loginField);
 
         JLabel lblPassword = new JLabel("Password");
-        lblPassword.setBounds(10, 70, 100, 20);
+        lblPassword.setBounds(110, 70, 100, 20);
         add(lblPassword);
 
         passwordField = new JTextField();
-        passwordField.setBounds(10, 100, 100, 20);
+        passwordField.setBounds(110, 100, 100, 20);
         add(passwordField);
 
         btnLogin = new JButton("Login");
-        btnLogin.setBounds(20, 130, 80, 20);
+        btnLogin.setBounds(120, 130, 80, 20);
         add(btnLogin);
 
         btnLogin.addActionListener(this::login);
@@ -52,24 +53,27 @@ public class LoginForm extends JFrame {
             Map<String, ArrayList<Object>> result = db.selectWhere("USER", "login='" + loginField.getText() + "'");
             ArrayList<Object> password = result.get("password");
             if (password.size() == 0) {
-                JOptionPane.showMessageDialog(this, "No user with this login");
+                JOptionPane.showMessageDialog(this, "Нет такого пользователя", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             if (!passwordField.getText().equals(password.get(0))) {
-                JOptionPane.showMessageDialog(this, "Wrong password");
+                JOptionPane.showMessageDialog(this, "Неверный пароль", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             int id = (int) result.get("id").get(0);
-            JOptionPane.showMessageDialog(this, "Ok");
+            // JOptionPane.showMessageDialog(this, "Ok");
             if ("teacher".equals(result.get("position").get(0))) {
                 new TeacherForm(db, id);
+                dispose();
             } else if ("decanat".equals(result.get("position").get(0))) {
                 new DecanatForm(db, id);
+                dispose();
             } else if ("admin".equals(result.get("position").get(0))) {
                 new DbTableForm(db, "user"); //new DecanatForm(db, id);
-            }else {
-                JOptionPane.showMessageDialog(this, "Неопределенный тип сотрудика");
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Неопределенный тип сотрудика", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

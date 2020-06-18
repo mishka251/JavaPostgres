@@ -28,12 +28,13 @@ public class TeacherForm extends JFrame {
 
     TeacherForm(PosgtresDB db, int teacher_id) {
         setLayout(null);
+        setTitle("Форма преподователя");
         this.teacher_id = teacher_id;
         this.db = db;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel lblGroups = new JLabel("Группа");
-        lblGroups.setBounds(10, 10, 100, 40);
+        lblGroups.setBounds(10, 10, 50, 30);
         add(lblGroups);
 
         try {
@@ -41,14 +42,14 @@ public class TeacherForm extends JFrame {
                     db.select("group");
             group_ids = Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class);
             group = new JComboBox<>(Arrays.copyOf(groups.get("name").toArray(), groups.get("name").size(), String[].class));
-            group.setBounds(130, 10, 100, 30);
+            group.setBounds(70, 10, 100, 30);
             add(group);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
         JLabel lblSubj = new JLabel("Предмет");
-        lblSubj.setBounds(250, 10, 100, 40);
+        lblSubj.setBounds(320, 10, 60, 30);
         add(lblSubj);
 
         try {
@@ -62,13 +63,13 @@ public class TeacherForm extends JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-        JButton btnLoad = new JButton("Load");
-        btnLoad.setBounds(390, 40, 100, 30);
+        JButton btnLoad = new JButton("Загрузить из БД");
+        btnLoad.setBounds(330, 140, 150, 30);
         add(btnLoad);
         btnLoad.addActionListener(event -> this.loadStudents());
 
-        JButton btnSave = new JButton("Save");
-        btnSave.setBounds(390, 80, 100, 30);
+        JButton btnSave = new JButton("Сохранить в БД");
+        btnSave.setBounds(330, 180, 150, 30);
         add(btnSave);
         btnSave.addActionListener(event -> this.saveMarks());
 

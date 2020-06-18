@@ -25,6 +25,7 @@ public class UspevReportForm extends JFrame {
     UspevReportForm(PosgtresDB db, int id) {
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Отчёт по успеваемости");
         this.db = db;
         this.user_id = id;
 
@@ -42,13 +43,13 @@ public class UspevReportForm extends JFrame {
         }
 
 
-        JButton btnLoad = new JButton("Load");
-        btnLoad.setBounds(390, 40, 100, 30);
+        JButton btnLoad = new JButton("Загрузить из БД");
+        btnLoad.setBounds(320, 10, 150, 30);
         add(btnLoad);
         btnLoad.addActionListener(event -> this.loadReport());
 
-        JButton btnSave = new JButton("Save");
-        btnSave.setBounds(390, 80, 100, 30);
+        JButton btnSave = new JButton("Сохранить в БД");
+        btnSave.setBounds(320, 50, 150, 30);
         add(btnSave);
         btnSave.addActionListener(event -> this.saveReport());
 
@@ -61,7 +62,7 @@ public class UspevReportForm extends JFrame {
         add(scroll);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scroll.setBounds(10, 100, 400, 300);
+        scroll.setBounds(10, 60, 300, 300);
 
         fileChooser = new JFileChooser();
 
