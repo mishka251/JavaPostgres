@@ -11,6 +11,7 @@ public class ReportFormatter {
             "Ударников - _ударников_\n" +
             "Троешников - _троечников_\n" +
             "Двоечников - _двоечников_\n" +
+            "_студенты_"+
             "_форма_контроля_ был проведен _дата_\n";
 
     ReportFormatter(Report report) {
@@ -19,14 +20,22 @@ public class ReportFormatter {
 
     String format() {
         SimpleDateFormat sd = new SimpleDateFormat("dd.MM.yyyy");
+        StringBuilder students = new StringBuilder();
+        for(int i=0; i<report.studentNames.length; i++){
+            students.append(report.studentNames[i]);
+            students.append(" - ");
+            students.append(report.studentMarks[i]);
+            students.append("\n");
+        }
         return template
                 .replace("_группа_", report.groupNumber + report.groupSpeciality)
-                .replace("_предмет_", this.report.subjectName)
-                .replace("_отличников_", (this.report.excellentPercent * 100) + "%")
-                .replace("_ударников_", (this.report.strikerPercent * 100) + "%")
-                .replace("_троечников_", (this.report.threesomePercent * 100) + "%")
-                .replace("_двоечников_", (this.report.looserPercent * 100) + "%")
-                .replace("_форма_контроля_", this.report.controlType)
-                .replace("_дата_", sd.format(this.report.date));
+                .replace("_предмет_", report.subjectName)
+                .replace("_отличников_", (report.excellentPercent * 100) + "%")
+                .replace("_ударников_", (report.strikerPercent * 100) + "%")
+                .replace("_троечников_", (report.threesomePercent * 100) + "%")
+                .replace("_двоечников_", (report.looserPercent * 100) + "%")
+                .replace("_форма_контроля_", report.controlType)
+                .replace("_дата_", sd.format(report.date))
+                .replace("_студенты_", students);
     }
 }

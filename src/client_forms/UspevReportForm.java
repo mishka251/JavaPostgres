@@ -20,7 +20,7 @@ public class UspevReportForm extends JFrame {
     final JTextPane reportEditor;
 
     final JFileChooser fileChooser;
-
+    JScrollPane scroll;
 
     UspevReportForm(PosgtresDB db, int id) {
         setLayout(null);
@@ -33,9 +33,7 @@ public class UspevReportForm extends JFrame {
         add(lblGroups);
 
         try {
-            Map<String, ArrayList<Object>> groups =
-                    db.select("register");
-            // group_ids = Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class);
+            Map<String, ArrayList<Object>> groups = db.select("register");
             register = new JComboBox<>(Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class));
             register.setBounds(130, 10, 100, 30);
             add(register);
@@ -59,6 +57,12 @@ public class UspevReportForm extends JFrame {
         reportEditor.setBounds(10, 100, 400, 300);
         add(reportEditor);
 
+        scroll = new JScrollPane(reportEditor);
+        add(scroll);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setBounds(10, 100, 400, 300);
+
         fileChooser = new JFileChooser();
 
         setSize(500, 400);
@@ -73,7 +77,7 @@ public class UspevReportForm extends JFrame {
             this.report.calculateStatistic();
             ReportFormatter formatter = new ReportFormatter(report);
             reportEditor.setText(formatter.format());
-
+            scroll.setViewportView(reportEditor);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }

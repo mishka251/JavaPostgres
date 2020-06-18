@@ -168,14 +168,30 @@ public class Main {
                 "ПИ-2"
         };
 
+        String[] groupNumbers = new String[]{
+                "1",
+                "1",
+                "2"
+        };
+
+        String[] groupSpecs = new String[]{
+                "ЭАС",
+                "ПИ",
+                "ПИ"
+        };
+
         long[] groups = new long[groupNames.length];
         for (int i = 0; i < groupNames.length; i++) {
             groups[i] = db.insert("group", new String[]{
                             "name",
+                            "number",
+                            "speciality",
                             "department_id"
                     },
                     new Object[]{
                             groupNames[i],
+                            groupNumbers[i],
+                            groupSpecs[i],
                             caf_id
                     });
         }

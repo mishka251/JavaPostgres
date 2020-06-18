@@ -16,11 +16,12 @@ public class Report {
 
     Integer[] studentIds;
     String[] studentNames;
+    double[] studentMarks;
 
-    int excellentPercent;
-    int strikerPercent;
-    int threesomePercent;
-    int looserPercent;
+    double excellentPercent;
+    double strikerPercent;
+    double threesomePercent;
+    double looserPercent;
 
     String groupNumber;
     String groupSpeciality;
@@ -42,6 +43,7 @@ public class Report {
         controlType = (String) registerTable.get("control_type").get(0);
         date = new Date((Long) registerTable.get("date").get(0));// (Date) registerTable.get("date").get(0);
 
+
         Map<String, ArrayList<Object>> studentsTable = db.selectWhere("student", "surname", "ASC", "group_id=" + groupId);
         studentNames = Arrays.copyOf(studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
         studentIds = Arrays.copyOf(studentsTable.get("id").toArray(), studentsTable.get("id").size(), Integer[].class);
@@ -61,6 +63,8 @@ public class Report {
         strikerPercent = 0;
         excellentPercent = 0;
 
+        studentMarks = new double[studentNames.length];
+
         for (int i = 0; i < studentNames.length; i++) {
             Map<String, ArrayList<Object>> studentMarks = db.selectWhere("student_mark_in_register",
                     "student_id=" + studentIds[i] + " AND register_id=" + registerId);
@@ -77,6 +81,29 @@ public class Report {
                 threesomePercent++;
             } else {
                 looserPercent++;
+            }
+            this.studentMarks[i] = mid;
+        }
+        excellentPercent /= studentNames.length;
+        strikerPercent /= studentNames.length;
+        threesomePercent /= studentNames.length;
+        looserPercent /= studentNames.length;
+
+        for (int i = 0; i < this.studentNames.length; i++) {
+            for (int j = i + 1; j < studentNames.length; j++) {
+                if (studentMarks[j] > studentMarks[i]) {
+                    double tmp = studentMarks[i];
+                    studentMarks[i] = studentMarks[j];
+                    studentMarks[j] = tmp;
+
+                    int tmp2 = studentIds[i];
+                    studentIds[i] = studentIds[j];
+                    studentIds[j] = tmp2;
+
+                    String tmp3 = studentNames[i];
+                    studentNames[i] = studentNames[j];
+                    studentNames[j] = tmp3;
+                }
             }
         }
     }
