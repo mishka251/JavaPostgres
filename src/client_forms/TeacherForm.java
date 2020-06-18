@@ -87,7 +87,7 @@ public class TeacherForm extends JFrame {
         studentPanels.clear();
 
         for (int i = 0; i < register.studentNames.length; i++) {
-            StudentPanel panel = new StudentPanel(register.studentNames[i]);
+            StudentPanel panel = new StudentPanel(register.studentNames[i], register.studentHasMark[i], register.studentMarks[i]);
             panel.setBounds(10, 40 + 40 * i, 250, 30);
             add(panel);
             studentPanels.add(panel);
@@ -98,6 +98,10 @@ public class TeacherForm extends JFrame {
     void saveMarks() {
         if (this.register == null) {
             JOptionPane.showMessageDialog(this, "Не загружены студенты");
+            return;
+        }
+        if (register.isSaved) {
+            JOptionPane.showMessageDialog(this, "Нельзя менять поставленные оценки");
             return;
         }
 
@@ -119,7 +123,7 @@ public class TeacherForm extends JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
-
+        this.loadStudents();
     }
 }
 
@@ -127,7 +131,7 @@ class StudentPanel extends JPanel {
     final JLabel lbl;
     final JTextField fields;
 
-    StudentPanel(String studentName) {
+    StudentPanel(String studentName, boolean isReadOnly, Integer mark) {
         setLayout(null);
         lbl = new JLabel(studentName);
         lbl.setBounds(10, 10, 100, 20);
@@ -135,6 +139,11 @@ class StudentPanel extends JPanel {
 
         fields = new JTextField();
         fields.setBounds(120, 10, 100, 20);
+        fields.setEditable(!isReadOnly);
+        if (mark != null) {
+            fields.setText(mark.toString());
+        }
+
         add(fields);
         setVisible(true);
     }
