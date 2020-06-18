@@ -3,6 +3,7 @@ package client_forms;
 import database_instruments.PosgtresDB;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Arrays;
@@ -19,7 +20,11 @@ public class TeacherForm extends JFrame {
     Integer[] subject_ids;
     Register register = null;
 
+    final JPanel studentsPanel;
+
     final ArrayList<StudentPanel> studentPanels = new ArrayList<>();
+
+    final JScrollPane scroll;
 
     TeacherForm(PosgtresDB db, int teacher_id) {
         setLayout(null);
@@ -70,7 +75,14 @@ public class TeacherForm extends JFrame {
         setSize(500, 400);
         setVisible(true);
 
+        studentsPanel = new JPanel();
+        studentsPanel.setLayout(null);
 
+        scroll = new JScrollPane(studentsPanel);
+        add(scroll);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setBounds(10, 50, 300, 250);
     }
 
 
@@ -88,10 +100,12 @@ public class TeacherForm extends JFrame {
 
         for (int i = 0; i < register.studentNames.length; i++) {
             StudentPanel panel = new StudentPanel(register.studentNames[i], register.studentHasMark[i], register.studentMarks[i]);
-            panel.setBounds(10, 40 + 40 * i, 250, 30);
-            add(panel);
+            panel.setBounds(5,  40 * i, 250, 30);
+            studentsPanel.add(panel);
             studentPanels.add(panel);
         }
+        studentsPanel.setPreferredSize(new Dimension( 300, 40+30*register.studentNames.length));
+        scroll.setViewportView(studentsPanel);
         repaint();
     }
 
