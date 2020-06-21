@@ -40,7 +40,14 @@ public class Register {
 
     public void loadFromDb() throws SQLException {
         Map<String, ArrayList<Object>> studentsTable = db.selectWhere("student", "surname", "ASC", "group_id=" + groupId);
-        studentNames = Arrays.copyOf(studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
+        String[] names = Arrays.copyOf(studentsTable.get("name").toArray(), studentsTable.get("name").size(), String[].class);
+        String[] surnames = Arrays.copyOf(studentsTable.get("surname").toArray(), studentsTable.get("surname").size(), String[].class);
+
+        this.studentNames = new String[names.length];
+        for (int i = 0; i < names.length; i++) {
+            this.studentNames[i] = surnames[i] + " " + names[i];
+        }
+
         studentIds = Arrays.copyOf(studentsTable.get("id").toArray(), studentsTable.get("id").size(), Integer[].class);
 
         Map<String, ArrayList<Object>> groupTable = db.selectWhere("group", "id=" + groupId);
@@ -56,29 +63,29 @@ public class Register {
         subjectName = (String) subjectTable.get("name").get(0);
 
         Map<String, ArrayList<Object>> register =
-                db.selectWhere("register", "teacher_id=" + teacherId+" AND subject_id="+subjectId+" AND group_id="+groupId);
+                db.selectWhere("register", "teacher_id=" + teacherId + " AND subject_id=" + subjectId + " AND group_id=" + groupId);
 
-        isSaved=register.get("id").size()!=0;
+        isSaved = register.get("id").size() != 0;
         studentMarks = new Integer[studentNames.length];
         studentHasMark = new Boolean[studentNames.length];
-        for(int i=0; i<this.studentIds.length; i++){
-            studentMarks[i]=null;
-            studentHasMark[i]=false;
+        for (int i = 0; i < this.studentIds.length; i++) {
+            studentMarks[i] = null;
+            studentHasMark[i] = false;
         }
-        if(isSaved){
-            int registerId = (int)register.get("id").get(0);
+        if (isSaved) {
+            int registerId = (int) register.get("id").get(0);
 
-            for(int i=0; i<this.studentIds.length; i++){
-                int studId=this.studentIds[i];
+            for (int i = 0; i < this.studentIds.length; i++) {
+                int studId = this.studentIds[i];
                 Map<String, ArrayList<Object>> subjectMarkTable =
-                        db.selectWhere("student_mark_in_register", "student_id="+studId+" AND register_id="+registerId);
+                        db.selectWhere("student_mark_in_register", "student_id=" + studId + " AND register_id=" + registerId);
 
-                if(subjectMarkTable.get("mark").size()==0){
+                if (subjectMarkTable.get("mark").size() == 0) {
                     continue;
                 }
 
-                studentMarks[i]=(Integer)subjectMarkTable.get("mark").get(0);
-                studentHasMark[i]=true;
+                studentMarks[i] = (Integer) subjectMarkTable.get("mark").get(0);
+                studentHasMark[i] = true;
             }
         }
     }
@@ -107,9 +114,9 @@ public class Register {
             db.insert("student_mark_in_register", new String[]{"student_id", "register_id", "mark"},
                     new Object[]{studentIds[i], id, studentMarks[i]});
         }
-        isSaved=true;
-        for(int i=0; i<this.studentIds.length; i++){
-            studentHasMark[i]=true;
+        isSaved = true;
+        for (int i = 0; i < this.studentIds.length; i++) {
+            studentHasMark[i] = true;
         }
     }
 
