@@ -28,8 +28,8 @@ setTitle("Рейтинг студентов");
         setLayout(null);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel lblGroups = new JLabel("Группа");
-        lblGroups.setBounds(10, 10, 100, 40);
+        JLabel lblGroups = new JLabel("Выберите группу из списка");
+        lblGroups.setBounds(10, 10, 300, 40);
         add(lblGroups);
 
         try {
@@ -40,19 +40,19 @@ setTitle("Рейтинг студентов");
 
             group = new JComboBox<>(Arrays.copyOf(groups.get("name").toArray(), groups.get("name").size(), String[].class));
             group.addItem("все");
-            group.setBounds(130, 10, 100, 30);
+            group.setBounds(330, 10, 100, 30);
             add(group);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-        JButton btnLoad = new JButton("Загрузить рейтинг");
-        btnLoad.setBounds(320, 40, 150, 30);
+        JButton btnLoad = new JButton("Сформировать рейтинг");
+        btnLoad.setBounds(320, 40, 200, 30);
         add(btnLoad);
         btnLoad.addActionListener(event -> this.loadStudents());
 
 
-        setSize(500, 400);
+        setSize(570, 400);
         setVisible(true);
 
         studentsPanel = new JPanel();

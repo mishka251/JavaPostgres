@@ -28,13 +28,13 @@ public class TeacherForm extends JFrame {
 
     TeacherForm(PosgtresDB db, int teacher_id) {
         setLayout(null);
-        setTitle("Форма преподователя");
+        setTitle("Работа с ведомостью [Права преподавателя]");
         this.teacher_id = teacher_id;
         this.db = db;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JLabel lblGroups = new JLabel("Группа");
-        lblGroups.setBounds(10, 10, 50, 30);
+        JLabel lblGroups = new JLabel("Выберите группу из предложенного списка");
+        lblGroups.setBounds(10, 10, 310, 20);
         add(lblGroups);
 
         try {
@@ -42,14 +42,14 @@ public class TeacherForm extends JFrame {
                     db.select("group");
             group_ids = Arrays.copyOf(groups.get("id").toArray(), groups.get("id").size(), Integer[].class);
             group = new JComboBox<>(Arrays.copyOf(groups.get("name").toArray(), groups.get("name").size(), String[].class));
-            group.setBounds(70, 10, 100, 30);
+            group.setBounds(340, 10, 100, 20);
             add(group);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-        JLabel lblSubj = new JLabel("Предмет");
-        lblSubj.setBounds(320, 10, 60, 30);
+        JLabel lblSubj = new JLabel("Выберите дисциплину из предложенного списка");
+        lblSubj.setBounds(10, 40, 310, 20);
         add(lblSubj);
 
         try {
@@ -57,18 +57,18 @@ public class TeacherForm extends JFrame {
                     db.select("subjects");
             subject_ids = Arrays.copyOf(subjects.get("id").toArray(), subjects.get("id").size(), Integer[].class);
             subject = new JComboBox<>(Arrays.copyOf(subjects.get("name").toArray(), subjects.get("name").size(), String[].class));
-            subject.setBounds(380, 10, 100, 30);
+            subject.setBounds(340, 40, 100, 20);
             add(subject);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
 
-        JButton btnLoad = new JButton("Загрузить из БД");
+        JButton btnLoad = new JButton("Загрузить данные");
         btnLoad.setBounds(330, 140, 150, 30);
         add(btnLoad);
         btnLoad.addActionListener(event -> this.loadStudents());
 
-        JButton btnSave = new JButton("Сохранить в БД");
+        JButton btnSave = new JButton("Сохранить данные");
         btnSave.setBounds(330, 180, 150, 30);
         add(btnSave);
         btnSave.addActionListener(event -> this.saveMarks());
@@ -83,7 +83,7 @@ public class TeacherForm extends JFrame {
         add(scroll);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scroll.setBounds(10, 50, 300, 250);
+        scroll.setBounds(10, 110, 300, 250);
     }
 
 

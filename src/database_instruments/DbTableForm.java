@@ -35,7 +35,7 @@ public class DbTableForm extends JFrame {
         panel1.setVisible(true);
        // add(panel1);
 
-        JLabel lblDeletedField = new JLabel("Поле для удаления");
+        JLabel lblDeletedField = new JLabel("Выберете поле для удаления");
         lblDeletedField.setBounds(10, 10, 130, 20);
         add(lblDeletedField);
 
@@ -43,7 +43,7 @@ public class DbTableForm extends JFrame {
         cmbDeleteField.setBounds(150, 10, 120, 20);
         add(cmbDeleteField);
 
-        JLabel lblInput = new JLabel("Значение удаляемого");
+        JLabel lblInput = new JLabel("Введите значение удаляемого");
         lblInput.setBounds(300, 10, 130, 20);
         add(lblInput);
 
@@ -75,7 +75,7 @@ public class DbTableForm extends JFrame {
        // panel1.add();
 
         if (tableName == null) {
-            setTitle("Редактор таблиц");
+            setTitle(" Редактирование данных БД [Права администратора]");
             JLabel lblTable = new JLabel("Table");
             lblTable.setBounds(0, 5, 50, 20);
             add(lblTable);
@@ -95,7 +95,7 @@ public class DbTableForm extends JFrame {
             btnDrop.addActionListener(this::dropTable);
 
         } else {
-            setTitle("Редактор таблицы " + tableName);
+            setTitle(" Редактирование данных БД [Права администратора]");
             fillTable();
         }
 
@@ -160,7 +160,7 @@ public class DbTableForm extends JFrame {
         String deleteField = (String) cmbDeleteField.getSelectedItem();
         if (deleteCondition == null || deleteCondition.equals("")
                 || deleteField == null || deleteField.equals("")) {
-            JOptionPane.showMessageDialog(this, "Введите фамилию кого удалять");
+            JOptionPane.showMessageDialog(this, "Пожалуйста, введите в поле \"Значение удаляемого\" фамилию сотрудника, которого необходимо удалить");
             return;
         }
         try {

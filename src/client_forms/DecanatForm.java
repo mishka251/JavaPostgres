@@ -14,7 +14,7 @@ public class DecanatForm extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.db = db;
         this.user_id = id;
-        setTitle("Форма сотрудника деканата");
+        setTitle("Меню функций работы деканата [Права сотрудника деканата]");
 
         JButton btnStudentsTable = new JButton("Редактирвоание студентов");
         btnStudentsTable.setBounds(50, 10, 200, 20);

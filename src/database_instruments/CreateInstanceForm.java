@@ -21,7 +21,7 @@ public class CreateInstanceForm extends JFrame {
         this.db = db;
         this.tableName = tableName;
         inputs = new HashMap<>();
-
+setTitle("Добавление строки в таблицу пользователей [Права администратора]");
         try {
             columns = db.getTableColumnNames(tableName);
         } catch (Exception ex) {
@@ -39,11 +39,15 @@ public class CreateInstanceForm extends JFrame {
         mainPanel.setVisible(true);
         mainPanel.setBackground(Color.red);
 
+        JLabel lbl = new JLabel("Для добавление строки, введите пожалуйста данные в полях ниже");
+        lbl.setBounds(0, 0, 300, 20);
+        mainPanel.add(lbl);
+
         for (int i = 0; i < columns.size(); i++) {
             TableColumn column = columns.get(i);
             FieldPanel panel = new FieldPanel(column, filledFields);
             inputs.put(column, panel);
-            panel.setBounds(5, 35 * i, 240, 30);
+            panel.setBounds(5, 35 * i+40, 240, 30);
             mainPanel.add(panel);
             mainPanel.repaint();
         }
